@@ -209,6 +209,7 @@ public class Bishop extends Piece {
     @Override
     public Piece clone() {
         Bishop clone = new Bishop(this.type,this.number);
+        clone.active=this.active;
         clone.position = this.position;
         clone.computeNextPossibleMoove();
         return clone;

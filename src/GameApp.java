@@ -38,7 +38,7 @@ public class GameApp {
         }
         boolean available = this.currentPiece.isNextMooveAvailable(chessBoard.getPieces(),this.currentPiece.position,chessBoard.moovePosition);
         if(available){
-            this.chessBoard.checkPieceGotEaten(this.turn);
+            this.chessBoard.checkPieceGotEaten();
             this.currentPiece.update(chessBoard.moovePosition);
             this.chessBoard.update();
         }else{
@@ -58,7 +58,7 @@ public class GameApp {
         boolean available = this.currentPiece.isNextMooveAvailable(chessBoard.getPieces(),startPos,nextPos);
         if(available){
             if(!isKingCheck()){
-                this.chessBoard.checkPieceGotEaten(this.turn);
+                this.chessBoard.checkPieceGotEaten();
                 this.currentPiece.update(chessBoard.moovePosition);
                 this.chessBoard.update();
             }else{
@@ -86,7 +86,7 @@ public class GameApp {
         Piece clonedCurrentPiece=null;
         Position clonedKing= null;
         for(Piece piece: clonedPieces){
-            if(piece.position == this.currentPiece.position && piece.active){
+            if(piece.position.equals(this.currentPiece.position) && piece.active){
                 clonedCurrentPiece=piece;
             }
             if(piece instanceof King && this.currentPiece.type == piece.type){
@@ -97,7 +97,7 @@ public class GameApp {
             chessBoard.checkClonedPieceGotEaten(clonedPieces);
             clonedCurrentPiece.update(chessBoard.moovePosition);
             for(Piece piece: clonedPieces){
-                if(piece.isNextMooveAvailable(this.chessBoard.getPieces(),piece.position,clonedKing) && piece.active){
+                if(piece.isNextMooveAvailable(clonedPieces,piece.position,clonedKing) && piece.active){
                     return true;
                 }
             }

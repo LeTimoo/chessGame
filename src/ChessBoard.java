@@ -42,25 +42,20 @@ public class ChessBoard {
 
     }
 
-    public void checkPieceGotEaten(int turn){
+    public void checkPieceGotEaten(){
         for (Piece piece : this.pieces) {
-            if(piece.position.equals(this.moovePosition)){
+            if(piece.position.equals(this.moovePosition) && piece.active){
                 piece.active=false;
             }
         }
     }
     public void checkClonedPieceGotEaten(List<Piece> clonedPieces){
         for (Piece piece : clonedPieces) {
-            if(piece.position.equals(this.moovePosition)){
+            if(piece.position.equals(this.moovePosition) && piece.active){
                 piece.active=false;
             }
         }
     }
-    /*public void pieceClonedReactivate(int turn){
-       if(eatenPiece!=null ){
-           eatenPiece.active=true;
-       }
-    }*/
     public List<Piece> clonePieces() {
         List<Piece> clone = new ArrayList<>();
         for (Piece piece : this.pieces) {

@@ -192,6 +192,7 @@ public class Pawn extends Piece {
     @Override
     public Piece clone() {
         Pawn clone = new Pawn(this.type,this.number);
+        clone.active=this.active;
         clone.position = this.position;
         clone.isFirstMoove=this.isFirstMoove;
         clone.computeNextPossibleMoove();

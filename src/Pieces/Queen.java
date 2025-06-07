@@ -288,6 +288,7 @@ public class Queen extends Piece {
     @Override
     public Piece clone() {
         Queen clone = new Queen(this.type);
+        clone.active=this.active;
         clone.position = this.position;
         clone.computeNextPossibleMoove();
         return clone;

@@ -150,6 +150,7 @@ public class Rook extends Piece {
     @Override
     public Piece clone() {
         Rook clone = new Rook(this.type,this.number);
+        clone.active=this.active;
         clone.position = this.position;
         clone.computeNextPossibleMoove();
         return clone;

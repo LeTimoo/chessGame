@@ -104,6 +104,7 @@ public class Knight extends Piece {
     @Override
     public Piece clone() {
         Knight clone = new Knight(this.type,this.number);
+        clone.active=this.active;
         clone.position = this.position;
         clone.computeNextPossibleMoove();
         return clone;
