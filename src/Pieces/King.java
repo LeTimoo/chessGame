@@ -26,10 +26,10 @@ public class King extends Piece {
     public void initialize() throws Exception {
         switch (type){
             case ColorGame.WHITE:
-                this.position = new Position(4,7);
+                this.position = new Position(3,7);
                 break;
             case ColorGame.BLACK:
-                this.position = new Position(4,0);
+                this.position = new Position(3,0);
                 break;
             default:
                 throw new Exception();
@@ -67,17 +67,17 @@ public class King extends Piece {
     public boolean isNextMooveAvailable(List<Piece> piecesPosition, Position currentPosition, Position nextMoove) {
         //rajouter la logic MAT , coup illégal , PAT
         for(Piece piece : piecesPosition){
-            if(piece.position.equals(nextMoove) && piece.type == this.type){
+            if(piece.position.equals(nextMoove) && piece.type == this.type && piece.active){
                 return false;
             }
         }
         if(this.nextPossiblePosition.contains(nextMoove)){
-            for(Piece piece: piecesPosition){
+            /*for(Piece piece: piecesPosition){
                 if(piece.isNextMooveAvailable(piecesPosition,piece.position,nextMoove)){
                     //King would be in check
                     return false;
                 }
-            }
+            }*/
             return true;
         }
         return false;

@@ -174,7 +174,7 @@ public class Pawn extends Piece {
                     }
                 }
             }
-            if(this.attackingPosition.contains(nextMoove) && this.attackingPosition.contains(piece.position)){
+            if(this.attackingPosition.contains(nextMoove) && (this.attackingPosition.contains(piece.position)&&piece.active) && nextMoove.equals(piece.position)){
                 if(!(piece.type ==this.type)){
                     attackingMoove=true;
                 }

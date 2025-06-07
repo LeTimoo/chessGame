@@ -96,6 +96,9 @@ public class GameApp {
         if(clonedKing!=null && clonedCurrentPiece!=null){
             chessBoard.checkClonedPieceGotEaten(clonedPieces);
             clonedCurrentPiece.update(chessBoard.moovePosition);
+            if(clonedCurrentPiece instanceof King){
+                clonedKing = clonedCurrentPiece.position;
+            }
             for(Piece piece: clonedPieces){
                 if(piece.isNextMooveAvailable(clonedPieces,piece.position,clonedKing) && piece.active){
                     return true;

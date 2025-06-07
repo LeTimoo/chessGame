@@ -84,7 +84,7 @@ public class Rook extends Piece {
         int leftMax=0;
         int RightMax=7;
         for(Piece piece :piecesPosition){
-            if(!piece.position.equals(this.position)){
+            if(!piece.position.equals(this.position) && piece.active){
                 if(this.position.x==piece.position.x){
                     if(piece.position.y<= bottomMax && piece.position.y>this.position.y){
                         if(this.type==piece.type){

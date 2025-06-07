@@ -1,6 +1,7 @@
 package Pieces;
 
 import Enums.ColorGame;
+import javafx.geometry.Pos;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,7 +51,7 @@ public class Bishop extends Piece {
     }
     public void computeNextPossibleMoove(){
         List<Position> possiblePos = new ArrayList<>();
-        for(int i=0;i<8;i++){
+        for(int i=1;i<8;i++){
             Position topRight = new Position(this.position.x+i,this.position.y+i);
             Position bottomRight = new Position(this.position.x+i,this.position.y-i);
             Position bottomLeft = new Position(this.position.x-i,this.position.y-i);
@@ -73,116 +74,100 @@ public class Bishop extends Piece {
         int bottomRightStepMax=0;
         int topLeftStepMax=0;
         int topRightStepMax=0;
-        Position bottomLeftMax=null;
-        Position bottomRightMax = null;
-        Position topLeftMax = null;
-        Position topRightMax = null;
-        if(this.position.y>this.position.x){
-            bottomLeftStepMax=this.position.y;
+
+
+        topLeftStepMax = Math.min(this.position.x, this.position.y);
+        topRightStepMax = Math.min(7 - this.position.x, this.position.y);
+        bottomLeftStepMax = Math.min(this.position.x, 7 - this.position.y);
+        bottomRightStepMax = Math.min(7 - this.position.x, 7 - this.position.y);
+
+        Position bottomLeftMax = new Position(this.position.x - bottomLeftStepMax, this.position.y +bottomLeftStepMax);
+        Position bottomRightMax = new Position(this.position.x + bottomRightStepMax, this.position.y +bottomRightStepMax);
+        Position topLeftMax = new Position(this.position.x - topLeftStepMax, this.position.y - topLeftStepMax);
+        Position topRightMax = new Position(this.position.x + topRightStepMax, this.position.y - topRightStepMax);
+
+        for(int i=1;i<=bottomLeftStepMax;i++){
+            for(Piece piece: piecesPosition){
+                if(piece.position.equals(new Position(this.position.x-i,this.position.y+i))){
+                    if(piece.type == this.type){
+                        if(piece.position.x>=bottomLeftMax.x && piece.position.y<=bottomLeftMax.y){
+                            bottomLeftMax = new Position(this.position.x-i+1,this.position.y+i-1);
+                        }
+                    }else{
+                        if(piece.position.x>=bottomLeftMax.x && piece.position.y<=bottomLeftMax.y){
+                            bottomLeftMax = new Position(this.position.x-i,this.position.y+i);
+                        }
+                    }
+                }
+            }
+        }for(int i=1;i<=bottomRightStepMax;i++){
+            for(Piece piece: piecesPosition){
+                if(piece.position.equals(new Position(this.position.x+i,this.position.y+i))){
+                    if(piece.type == this.type){
+                        if(piece.position.x<=bottomRightMax.x && piece.position.y<=bottomRightMax.y){
+                            bottomRightMax = new Position(this.position.x+i-1,this.position.y+i-1);
+                        }
+                    }else{
+                        if(piece.position.x<=bottomRightMax.x && piece.position.y<=bottomRightMax.y){
+                            bottomRightMax = new Position(this.position.x+i,this.position.y+i);
+                        }
+                    }
+                }
+            }
         }
-        else{
-            bottomLeftStepMax=this.position.x;
-        }
-        if(this.position.y>(7-this.position.x)){
-            bottomRightStepMax=this.position.y;
-        }else{
-            bottomRightStepMax=7-this.position.x;
-        }if((7-this.position.y)>this.position.x){
-            topLeftStepMax=7-this.position.y;
-        }else{
-            topLeftStepMax=this.position.x;
-        }
-        if((7-this.position.y>(7-this.position.x))){
-            topRightStepMax=7-this.position.y;
-        }else{
-            topRightStepMax=7-this.position.x;
-        }
-        for(int i=1;i<bottomLeftStepMax;i++){
+        for(int i=1;i<=topLeftStepMax;i++){
             for(Piece piece: piecesPosition){
                 if(piece.position.equals(new Position(this.position.x-i,this.position.y-i))){
-                        if(piece.type==this.type){
-                            bottomLeftMax = new Position(this.position.x-i+1,this.position.y-i+1);
-                        }else{
-                            bottomLeftMax = new Position(this.position.x-i,this.position.y-i);
+                    if(piece.type == this.type){
+                        if(piece.position.x>=topLeftMax.x && piece.position.y>=topLeftMax.y){
+                            topLeftMax = new Position(this.position.x-i+1,this.position.y-i+1);
                         }
-                        break;
-                }
-            }
-            if(bottomLeftMax!=null){
-                break;
-            }
-        }
-        for (int i = 1; i <= bottomRightStepMax; i++) {
-            for (Piece piece : piecesPosition) {
-                if (piece.position.equals(new Position(this.position.x + i, this.position.y - i))) {
-                    if (piece.type == this.type) {
-                        bottomRightMax = new Position(this.position.x + i - 1, this.position.y - i + 1);
-                    } else {
-                        bottomRightMax = new Position(this.position.x + i, this.position.y - i);
+                    }else{
+                        if(piece.position.x>=topLeftMax.x && piece.position.y>=topLeftMax.y){
+                            topLeftMax = new Position(this.position.x-i,this.position.y-i);
+                        }
                     }
-                    break;
                 }
             }
-            if (bottomRightMax != null) break;
         }
-        for (int i = 1; i <= topLeftStepMax; i++) {
-            for (Piece piece : piecesPosition) {
-                if (piece.position.equals(new Position(this.position.x - i, this.position.y + i))) {
-                    if (piece.type == this.type) {
-                        topLeftMax = new Position(this.position.x - i + 1, this.position.y + i - 1);
-                    } else {
-                        topLeftMax = new Position(this.position.x - i, this.position.y + i);
-                    }
-                    break;
-                }
-            }
-            if (topLeftMax != null) break;
-        }
-        for (int i = 1; i <= topRightStepMax; i++) {
-            for (Piece piece : piecesPosition) {
-                if (piece.position.equals(new Position(this.position.x + i, this.position.y + i))) {
-                    if (piece.type == this.type) {
-                        topRightMax = new Position(this.position.x + i - 1, this.position.y + i - 1);
-                    } else {
-                        topRightMax = new Position(this.position.x + i, this.position.y + i);
-                    }
-                    break;
-                }
-            }
-            if (topRightMax != null) break;
-        }
-        if (bottomLeftMax == null) {
-            bottomLeftMax = new Position(this.position.x - bottomLeftStepMax, this.position.y - bottomLeftStepMax);
-        }if (bottomRightMax == null) {
-            bottomRightMax = new Position(this.position.x + bottomRightStepMax, this.position.y - bottomRightStepMax);
-        }if (topLeftMax == null) {
-            topLeftMax = new Position(this.position.x - topLeftStepMax, this.position.y + topLeftStepMax);
-        }if (topRightMax == null) {
-            topRightMax = new Position(this.position.x + topRightStepMax, this.position.y + topRightStepMax);
-        }
+        for(int i=1;i<=topRightStepMax;i++){
+            for(Piece piece: piecesPosition){
+                if(piece.position.equals(new Position(this.position.x+i,this.position.y-i))){
+                    if(piece.type == this.type){
+                        if(piece.position.x<=topRightMax.x && piece.position.y>=topRightMax.y){
+                            topRightMax = new Position(this.position.x+i-1,this.position.y-i+1);
+                        }
+                    }else{
+                        if(piece.position.x<=topRightMax.x && piece.position.y>=topRightMax.y){
+                            topRightMax = new Position(this.position.x+i,this.position.y-i);
+                        }
 
+                    }
+                }
+            }
+        }
         if (nextMoove.x <= this.position.x && nextMoove.y <= this.position.y &&
-                nextMoove.x >= bottomLeftMax.x && nextMoove.y >= bottomLeftMax.y) {
+                nextMoove.x >= topLeftMax.x && nextMoove.y >= topLeftMax.y) {
             if (this.nextPossiblePosition.contains(nextMoove)) {
                 return true;
             }
         }
         if (nextMoove.x >= this.position.x && nextMoove.y <= this.position.y &&
-                nextMoove.x <= bottomRightMax.x && nextMoove.y >= bottomRightMax.y) {
+                nextMoove.x <= topRightMax.x && nextMoove.y >= topRightMax.y) {
             if (this.nextPossiblePosition.contains(nextMoove)) {
                 return true;
             }
         }
 
         if (nextMoove.x <= this.position.x && nextMoove.y >= this.position.y &&
-                nextMoove.x >= topLeftMax.x && nextMoove.y <= topLeftMax.y) {
+                nextMoove.x >= bottomLeftMax.x && nextMoove.y <= bottomLeftMax.y) {
             if (this.nextPossiblePosition.contains(nextMoove)) {
                 return true;
             }
         }
 
         if (nextMoove.x >= this.position.x && nextMoove.y >= this.position.y &&
-                nextMoove.x <= topRightMax.x && nextMoove.y <= topRightMax.y) {
+                nextMoove.x <= bottomRightMax.x && nextMoove.y <= bottomRightMax.y) {
             if (this.nextPossiblePosition.contains(nextMoove)) {
                 return true;
             }
