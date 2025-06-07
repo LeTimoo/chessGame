@@ -7,14 +7,16 @@ import java.util.List;
 
 public class Queen extends Piece {
     public int display;
-    private List<Position> nextPossiblePosition = new ArrayList<>();
-
+    private List<Position> nextPossiblePositionRook = new ArrayList<>();
+    private List<Position> nextPossiblePositionBishop = new ArrayList<>();
     public Queen(ColorGame type){
         super(type,0);
         if(type == ColorGame.WHITE){
+            this.name="w_queen.png";
             this.display =0x265B;
         }
         else {
+            this.name="b_queen.png";
             this.display =0x2655;
         }
 
@@ -54,7 +56,7 @@ public class Queen extends Piece {
         }
         for(Position pos : possiblePos){
             if(pos.isInsideChessBoard()){
-                this.nextPossiblePosition.add(pos);
+                this.nextPossiblePositionBishop.add(pos);
             }
         }
     }
@@ -66,16 +68,16 @@ public class Queen extends Piece {
             Position pos2 = new Position(this.position.x-i,this.position.y);
             Position pos3 = new Position(this.position.x+i,this.position.y);
             if(pos.isInsideChessBoard()){
-                this.nextPossiblePosition.add(pos);
+                this.nextPossiblePositionRook.add(pos);
             }
             if(pos1.isInsideChessBoard()){
-                this.nextPossiblePosition.add(pos1);
+                this.nextPossiblePositionRook.add(pos1);
             }
             if(pos2.isInsideChessBoard()){
-                this.nextPossiblePosition.add(pos2);
+                this.nextPossiblePositionRook.add(pos2);
             }
             if(pos3.isInsideChessBoard()){
-                this.nextPossiblePosition.add(pos3);
+                this.nextPossiblePositionRook.add(pos3);
             }
         }
     }
@@ -150,7 +152,7 @@ public class Queen extends Piece {
                 if (piece.position.equals(new Position(this.position.x - i, this.position.y + i))) {
                     if (piece.type == this.type) {
                         topLeftMax = new Position(this.position.x - i + 1, this.position.y + i - 1);
-                    } else {
+                    }else {
                         topLeftMax = new Position(this.position.x - i, this.position.y + i);
                     }
                     break;
@@ -183,27 +185,27 @@ public class Queen extends Piece {
 
         if (nextMoove.x <= this.position.x && nextMoove.y <= this.position.y &&
                 nextMoove.x >= bottomLeftMax.x && nextMoove.y >= bottomLeftMax.y) {
-            if (this.nextPossiblePosition.contains(nextMoove)) {
+            if (this.nextPossiblePositionBishop.contains(nextMoove)) {
                 return true;
             }
         }
         if (nextMoove.x >= this.position.x && nextMoove.y <= this.position.y &&
                 nextMoove.x <= bottomRightMax.x && nextMoove.y >= bottomRightMax.y) {
-            if (this.nextPossiblePosition.contains(nextMoove)) {
+            if (this.nextPossiblePositionBishop.contains(nextMoove)) {
                 return true;
             }
         }
 
         if (nextMoove.x <= this.position.x && nextMoove.y >= this.position.y &&
                 nextMoove.x >= topLeftMax.x && nextMoove.y <= topLeftMax.y) {
-            if (this.nextPossiblePosition.contains(nextMoove)) {
+            if (this.nextPossiblePositionBishop.contains(nextMoove)) {
                 return true;
             }
         }
 
         if (nextMoove.x >= this.position.x && nextMoove.y >= this.position.y &&
                 nextMoove.x <= topRightMax.x && nextMoove.y <= topRightMax.y) {
-            if (this.nextPossiblePosition.contains(nextMoove)) {
+            if (this.nextPossiblePositionBishop.contains(nextMoove)) {
                 return true;
             }
         }
@@ -255,12 +257,12 @@ public class Queen extends Piece {
             }
         }
         if((nextMoove.y<=bottomMax && nextMoove.y>=topMax) && this.position.x==nextMoove.x){
-            if(this.nextPossiblePosition.contains(nextMoove)){
+            if(this.nextPossiblePositionRook.contains(nextMoove)){
                 return true;
             }
         }
         if((nextMoove.x>=leftMax && nextMoove.x<=RightMax) && this.position.y==nextMoove.y){
-            if(this.nextPossiblePosition.contains(nextMoove)){
+            if(this.nextPossiblePositionRook.contains(nextMoove)){
                 return true;
             }
         }
@@ -271,7 +273,8 @@ public class Queen extends Piece {
 
     @Override
     public void update(Position position) {
-        this.nextPossiblePosition.clear();
+        this.nextPossiblePositionRook.clear();
+        this.nextPossiblePositionBishop.clear();
         this.position=position;
         this.computeNextPossibleMoove();
     }
@@ -279,6 +282,15 @@ public class Queen extends Piece {
     @Override
     public int getDisplay(){
         return this.display;
+    }
+
+    //patern prototype
+    @Override
+    public Piece clone() {
+        Queen clone = new Queen(this.type);
+        clone.position = this.position;
+        clone.computeNextPossibleMoove();
+        return clone;
     }
 
 

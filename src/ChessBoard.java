@@ -11,7 +11,6 @@ public class ChessBoard {
 
     Position startPosition;
     Position moovePosition;
-
     private Piece[][] PiecesPosition = new Piece[8][8];
     private List<Piece> pieces = new ArrayList<>();
 
@@ -43,12 +42,31 @@ public class ChessBoard {
 
     }
 
-    public void checkPieceGotEaten(){
+    public void checkPieceGotEaten(int turn){
         for (Piece piece : this.pieces) {
             if(piece.position.equals(this.moovePosition)){
                 piece.active=false;
             }
         }
+    }
+    public void checkClonedPieceGotEaten(List<Piece> clonedPieces){
+        for (Piece piece : clonedPieces) {
+            if(piece.position.equals(this.moovePosition)){
+                piece.active=false;
+            }
+        }
+    }
+    /*public void pieceClonedReactivate(int turn){
+       if(eatenPiece!=null ){
+           eatenPiece.active=true;
+       }
+    }*/
+    public List<Piece> clonePieces() {
+        List<Piece> clone = new ArrayList<>();
+        for (Piece piece : this.pieces) {
+            clone.add(piece.clone());
+        }
+        return clone;
     }
 
     public void update(){

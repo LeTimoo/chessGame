@@ -14,9 +14,11 @@ public class Bishop extends Piece {
     public Bishop(ColorGame type, int number){
         super(type,number);
         if(type == ColorGame.WHITE){
+            this.name="w_bishop.png";
             this.display =0x265D;
         }
         else {
+            this.name="b_bishop.png";
             this.display =0x2657;
         }
         this.number = number;
@@ -203,4 +205,12 @@ public class Bishop extends Piece {
         return this.display;
     }
 
+    //patern prototype
+    @Override
+    public Piece clone() {
+        Bishop clone = new Bishop(this.type,this.number);
+        clone.position = this.position;
+        clone.computeNextPossibleMoove();
+        return clone;
+    }
 }

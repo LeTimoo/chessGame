@@ -14,9 +14,11 @@ public class Rook extends Piece {
     public Rook(ColorGame type, int number){
         super(type,number);
         if(type == ColorGame.WHITE){
+            this.name="w_rook.png";
             this.display =0x265C;
         }
         else {
+            this.name="b_rook.png";
             this.display =0x2656;
         }
         this.number = number;
@@ -142,6 +144,15 @@ public class Rook extends Piece {
     @Override
     public int getDisplay(){
         return this.display;
+    }
+
+    //patern prototype
+    @Override
+    public Piece clone() {
+        Rook clone = new Rook(this.type,this.number);
+        clone.position = this.position;
+        clone.computeNextPossibleMoove();
+        return clone;
     }
 
 }

@@ -5,6 +5,6 @@ public enum GameState {
     BLACK_TURN,
     MAT,
     PAT,
-    WHITE_ECHEC,
-    BLACK_ECHEC,
+    WHITE_CHECK,
+    BLACK_CHECK,
 }

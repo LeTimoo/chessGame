@@ -15,9 +15,11 @@ public class Pawn extends Piece {
     public Pawn(ColorGame type, int number){
         super(type,number);
         if(type == ColorGame.WHITE){
+            this.name="w_pawn.png";
             this.display =0x265F;
         }
         else {
+            this.name="b_pawn.png";
             this.display =0x2659;
         }
         this.number = number;
@@ -184,6 +186,17 @@ public class Pawn extends Piece {
     @Override
     public int getDisplay(){
         return this.display;
+    }
+
+    //patern prototype
+    @Override
+    public Piece clone() {
+        Pawn clone = new Pawn(this.type,this.number);
+        clone.position = this.position;
+        clone.isFirstMoove=this.isFirstMoove;
+        clone.computeNextPossibleMoove();
+        clone.computePotentialAttackingPosition();
+        return clone;
     }
 
 }

@@ -14,9 +14,11 @@ public class Knight extends Piece {
     public Knight(ColorGame type, int number){
         super(type,number);
         if(type == ColorGame.WHITE){
+            this.name="w_knight.png";
             this.display =0x265E;
         }
         else {
+            this.name="b_knight.png";
             this.display =0x2658;
         }
         this.number = number;
@@ -81,12 +83,6 @@ public class Knight extends Piece {
             }
         }
         if(this.nextPossiblePosition.contains(nextMoove)){
-            for(Piece piece: piecesPosition){
-                if(piece.isNextMooveAvailable(piecesPosition,piece.position,nextMoove)){
-                    //King would be in check
-                    return false;
-                }
-            }
             return true;
         }
         return false;
@@ -102,6 +98,15 @@ public class Knight extends Piece {
     @Override
     public int getDisplay(){
         return this.display;
+    }
+
+    //patern prototype
+    @Override
+    public Piece clone() {
+        Knight clone = new Knight(this.type,this.number);
+        clone.position = this.position;
+        clone.computeNextPossibleMoove();
+        return clone;
     }
 
 }

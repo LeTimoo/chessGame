@@ -7,14 +7,16 @@ import java.util.List;
 
 public class King extends Piece {
     public int display;
-    private List<Position> nextPossiblePosition = new ArrayList<>();
+    public List<Position> nextPossiblePosition = new ArrayList<>();
 
     public King(ColorGame type){
         super(type,0);
         if(type == ColorGame.WHITE){
+            this.name="w_king.png";
             this.display =0x265A;
         }
         else {
+            this.name="b_king.png";
             this.display =0x2654;
         }
 
@@ -70,6 +72,12 @@ public class King extends Piece {
             }
         }
         if(this.nextPossiblePosition.contains(nextMoove)){
+            for(Piece piece: piecesPosition){
+                if(piece.isNextMooveAvailable(piecesPosition,piece.position,nextMoove)){
+                    //King would be in check
+                    return false;
+                }
+            }
             return true;
         }
         return false;
@@ -85,6 +93,15 @@ public class King extends Piece {
     @Override
     public int getDisplay(){
         return this.display;
+    }
+
+    //patern prototype
+    @Override
+    public Piece clone() {
+        King clone = new King(this.type);
+        clone.position = this.position;
+        clone.computeNextPossibleMoove();
+        return clone;
     }
 
 }

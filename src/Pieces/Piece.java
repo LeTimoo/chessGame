@@ -4,11 +4,12 @@ import Enums.ColorGame;
 
 import java.util.List;
 
-public class Piece {
+public abstract class  Piece {
     public boolean active;
     public ColorGame type;
     public Position position;
     public int display;
+    public String name;
 
     public Piece(ColorGame type, int display){
         this.active=true;
@@ -23,6 +24,8 @@ public class Piece {
         return false;
     }
 
+    //implémentation du pattern prototype pour gérer le calcul de l'échec du roi en utilisant une copy des pieces et de la liste de pièce
+    public abstract Piece clone();
 
     public void update(Position position){
 
