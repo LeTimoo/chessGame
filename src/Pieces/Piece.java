@@ -2,6 +2,7 @@ package Pieces;
 
 import Enums.ColorGame;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class  Piece {
@@ -10,6 +11,7 @@ public abstract class  Piece {
     public Position position;
     public int display;
     public String name;
+    protected List<Position> nextPossiblePosition = new ArrayList<>();
 
     public Piece(ColorGame type, int display){
         this.active=true;
@@ -29,6 +31,9 @@ public abstract class  Piece {
 
     public void update(Position position){
 
+    }
+    public List<Position> getNextPossiblePosition() {
+        return nextPossiblePosition;
     }
 
     public int getDisplay() {

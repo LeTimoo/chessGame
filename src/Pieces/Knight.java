@@ -9,8 +9,6 @@ public class Knight extends Piece {
     public int number;
     public int display;
 
-    private List<Position> nextPossiblePosition = new ArrayList<>();
-
     public Knight(ColorGame type, int number){
         super(type,number);
         if(type == ColorGame.WHITE){

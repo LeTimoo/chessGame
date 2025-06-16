@@ -9,8 +9,6 @@ public class Rook extends Piece {
     public int number;
     public int display;
 
-    private List<Position> nextPossiblePosition = new ArrayList<>();
-
     public Rook(ColorGame type, int number){
         super(type,number);
         if(type == ColorGame.WHITE){

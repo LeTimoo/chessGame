@@ -10,8 +10,6 @@ public class Bishop extends Piece {
     public int number;
     public int display;
 
-    private List<Position> nextPossiblePosition = new ArrayList<>();
-
     public Bishop(ColorGame type, int number){
         super(type,number);
         if(type == ColorGame.WHITE){
@@ -88,7 +86,7 @@ public class Bishop extends Piece {
 
         for(int i=1;i<=bottomLeftStepMax;i++){
             for(Piece piece: piecesPosition){
-                if(piece.position.equals(new Position(this.position.x-i,this.position.y+i))){
+                if(piece.position.equals(new Position(this.position.x-i,this.position.y+i))&& piece.active){
                     if(piece.type == this.type){
                         if(piece.position.x>=bottomLeftMax.x && piece.position.y<=bottomLeftMax.y){
                             bottomLeftMax = new Position(this.position.x-i+1,this.position.y+i-1);
@@ -102,7 +100,7 @@ public class Bishop extends Piece {
             }
         }for(int i=1;i<=bottomRightStepMax;i++){
             for(Piece piece: piecesPosition){
-                if(piece.position.equals(new Position(this.position.x+i,this.position.y+i))){
+                if(piece.position.equals(new Position(this.position.x+i,this.position.y+i))&& piece.active){
                     if(piece.type == this.type){
                         if(piece.position.x<=bottomRightMax.x && piece.position.y<=bottomRightMax.y){
                             bottomRightMax = new Position(this.position.x+i-1,this.position.y+i-1);
@@ -117,7 +115,7 @@ public class Bishop extends Piece {
         }
         for(int i=1;i<=topLeftStepMax;i++){
             for(Piece piece: piecesPosition){
-                if(piece.position.equals(new Position(this.position.x-i,this.position.y-i))){
+                if(piece.position.equals(new Position(this.position.x-i,this.position.y-i))&& piece.active){
                     if(piece.type == this.type){
                         if(piece.position.x>=topLeftMax.x && piece.position.y>=topLeftMax.y){
                             topLeftMax = new Position(this.position.x-i+1,this.position.y-i+1);
@@ -132,7 +130,7 @@ public class Bishop extends Piece {
         }
         for(int i=1;i<=topRightStepMax;i++){
             for(Piece piece: piecesPosition){
-                if(piece.position.equals(new Position(this.position.x+i,this.position.y-i))){
+                if(piece.position.equals(new Position(this.position.x+i,this.position.y-i))&& piece.active){
                     if(piece.type == this.type){
                         if(piece.position.x<=topRightMax.x && piece.position.y>=topRightMax.y){
                             topRightMax = new Position(this.position.x+i-1,this.position.y-i+1);

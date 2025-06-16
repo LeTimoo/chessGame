@@ -6,6 +6,7 @@ import Pieces.Piece;
 import Pieces.Position;
 
 import java.awt.*;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -74,16 +75,26 @@ public class GameApp {
         }
         this.turn++;
         if(turn% 2 == 0 ){
+            /*if(isCheckMate()){
+                System.out.println(GameState.MAT);
+            }*/
             this.state = GameState.WHITE_TURN;
         }else{
+           /* if(isCheckMate()){
+                System.out.println(GameState.MAT);
+            }*/
             this.state = GameState.BLACK_TURN;
         }
         return null;
+
+
+
     }
 
     public boolean isKingCheck(){
         List<Piece> clonedPieces = this.chessBoard.clonePieces();
         Piece clonedCurrentPiece=null;
+        Piece pieceClonedKing=null;
         Position clonedKing= null;
         for(Piece piece: clonedPieces){
             if(piece.position.equals(this.currentPiece.position) && piece.active){
@@ -91,10 +102,45 @@ public class GameApp {
             }
             if(piece instanceof King && this.currentPiece.type == piece.type){
                 clonedKing=piece.position;
+                pieceClonedKing=piece;
             }
         }
         if(clonedKing!=null && clonedCurrentPiece!=null){
-            chessBoard.checkClonedPieceGotEaten(clonedPieces);
+            if(!clonedCurrentPiece.equals(pieceClonedKing)){
+                chessBoard.checkClonedPieceGotEaten(clonedPieces);
+            }
+            //chessBoard.checkClonedPieceGotEaten(clonedPieces);
+            clonedCurrentPiece.update(chessBoard.moovePosition);
+            if(clonedCurrentPiece instanceof King){
+                clonedKing = clonedCurrentPiece.position;
+            }
+            for(Piece piece: clonedPieces){
+                if(piece.isNextMooveAvailable(clonedPieces,piece.position,clonedKing) && piece.active){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+    public boolean isKingCheckForCheckMate(){
+        List<Piece> clonedPieces = this.chessBoard.clonePieces();
+        Piece clonedCurrentPiece=null;
+        Piece pieceClonedKing=null;
+        Position clonedKing= null;
+        for(Piece piece: clonedPieces){
+            if(piece.position.equals(this.currentPiece.position) && piece.active){
+                clonedCurrentPiece=piece;
+            }
+            if(piece instanceof King && this.currentPiece.type != piece.type){
+                clonedKing=piece.position;
+                pieceClonedKing=piece;
+            }
+        }
+        if(clonedKing!=null && clonedCurrentPiece!=null){
+            if(!clonedCurrentPiece.equals(pieceClonedKing)){
+                chessBoard.checkClonedPieceGotEaten(clonedPieces);
+            }
+            //chessBoard.checkClonedPieceGotEaten(clonedPieces);
             clonedCurrentPiece.update(chessBoard.moovePosition);
             if(clonedCurrentPiece instanceof King){
                 clonedKing = clonedCurrentPiece.position;
@@ -151,16 +197,105 @@ public class GameApp {
         //vérifier que le roi ne peux plus faire aucun moove
         // si aucun moove possible et check -> échec et Mat
         // si moove possible mais check après ( sur tous les coups possibles) -> échec et Mat
-        for(Piece piece: this.chessBoard.getPieces()){
-            if( piece instanceof King){
-                for (Position pos : ((King) piece).nextPossiblePosition){
-                    if(piece.isNextMooveAvailable(chessBoard.getPieces(),piece.position,pos)){
-                        //le roi peut se déplacer ici, vérifier qu'il n'est pas en Check par une autre piece
-                        //reboucler sur les pieces et vérifier que cette pose est avalaible pour aucun piece
-                        
-                    }
+        List<Piece> clonedPieces = this.chessBoard.clonePieces();
+        Piece king = null;
+        //Tout d'abord vérifier que le roi est en échecs avant de vérifier l'échecs et mat
+        if(this.state == GameState.WHITE_TURN) {
+            for (Piece piece : clonedPieces) {
+                if (piece instanceof King && piece.type == ColorGame.BLACK) {
+                    king = piece;
                 }
             }
+        }else{
+            for (Piece piece : clonedPieces) {
+                if (piece instanceof King && piece.type == ColorGame.WHITE) {
+                    king = piece;
+                }
+            }
+        }
+        this.currentPiece=king;
+        this.chessBoard.moovePosition=king.position;
+        if(isKingCheck()){
+            if(this.state == GameState.WHITE_TURN){
+                for(Piece piece: clonedPieces){
+                    if(piece instanceof King && piece.type==ColorGame.BLACK){
+                        king=piece;
+                    }
+                }
+                if(king!=null){
+                    for(Position position: ((King) king).getNextPossiblePosition()){
+                        if(king.isNextMooveAvailable(clonedPieces,king.position,position)){
+                            this.currentPiece=king;
+                            this.chessBoard.moovePosition=position;
+                            if(!isKingCheck()){
+                                return false; //le prochain a une possiblité de sortir de l'échecs
+                            }else{
+                                //le roi n'a pas de possibilité de sortir de l'échecs, il faut donc vérifier qu'une piece permet de bloquer l'échec
+                                List<Piece> clonePiecesAgain = this.chessBoard.clonePieces();
+                                for(Piece piece: clonePiecesAgain){
+                                    if(piece.type==ColorGame.BLACK && piece.active){
+                                        //on vérifie que les pieces noirs restantes peuvent ou non stopper l'échec
+                                        for(Position positionBlack: piece.getNextPossiblePosition()){
+                                            if(piece.active && piece.isNextMooveAvailable(clonePiecesAgain,piece.position,positionBlack)){
+                                                if(!(piece instanceof King) && piece.type==ColorGame.BLACK){
+                                                    this.currentPiece=piece;
+                                                    this.chessBoard.moovePosition=positionBlack;
+                                                    if(!isKingCheck()){//attention ici on vérifie sur le mauvais rois
+                                                        return false;
+                                                        //l'échec peut être parrer
+                                                    }
+                                                }
+
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+
+                            //vérifier maintenant que nous sommes en CHECK, si c'est le cas nous sommes échecs et mat (si c'est valide pour chaque position)
+                        }
+                    }
+                }
+            }else{
+                for(Piece piece: clonedPieces){
+                    if(piece instanceof King && piece.type==ColorGame.WHITE){
+                        king=piece;
+                    }
+                }
+                if(king!=null) {
+                    for (Position position : ((King) king).getNextPossiblePosition()) {
+                        if (king.isNextMooveAvailable(clonedPieces, king.position, position)) {
+                            this.currentPiece = king;
+                            this.chessBoard.moovePosition = position;
+                            if (!isKingCheck()) {
+                                return false; //le prochain a une possiblité de sortir de l'échecs
+                            } else {
+                                //le roi n'a pas de possibilité de sortir de l'échecs, il faut donc vérifier qu'une piece permet de bloquer l'échec
+                                List<Piece> clonePiecesAgain = this.chessBoard.clonePieces();
+                                for (Piece piece : clonePiecesAgain) {
+                                    if (piece.type == ColorGame.WHITE && piece.active) {
+                                        //on vérifie que les pieces blanches restantes peuvent ou non stopper l'échec
+                                        for (Position positionBlack : piece.getNextPossiblePosition()) {
+                                            if (piece.active && piece.isNextMooveAvailable(clonePiecesAgain, piece.position, positionBlack)) {
+                                                this.currentPiece = piece;
+                                                this.chessBoard.moovePosition = positionBlack;
+                                                if (!isKingCheck()) {
+                                                    return false;
+                                                    //l'échec peut être parrer
+                                                }
+                                            }
+                                        }
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+        }
+        }else{
+            return false;
         }
         return true;
     }

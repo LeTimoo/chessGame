@@ -1,0 +1,199 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+
+
+
+class ChessBoard {
+    + empty() : String
+    + show() : String
+    + initialize() : void
+    + checkPieceGotEaten() : void
+    + checkClonedPieceGotEaten() : void
+    + clonePieces() : List<Piece>
+    + update() : void
+    + toString() : String
+    + convertChoiceToPositionOnChessBoard() : void
+    + ResetBoard() : void
+    + getPieces() : List<Piece>
+}
+
+
+
+class ChessBoardUX {
+    - TILE_SIZE : int
+    - BOARD_SIZE : int
+    - grid : GridPane
+    - dragLayer : Pane
+    - app : GameApp
+    - currentPiece : Piece
+    - highlightSquare : StackPane
+    - moveIndicators : List<Circle>
+    + start(Stage)
+}
+
+class GameApp {
+    - state : GameState
+    - AnswerPositionStart : String
+    - AnswerPositionMoove : String
+    - currentPiece : Piece
+    - chessBoard : ChessBoard
+    - turn : int
+
+    + GameApp() : void
+    + nextTurn() : void
+    + nextTurnFromUX() : GameState
+    + isKingCheck() : boolean
+    + isKingCheckForCheckMate() : boolean
+    + isStartPieceExisting() : String
+    + askMoove() : String
+    + convertAnswerToPosition() : boolean
+    + isCheckMate() : boolean
+}
+
+
+class Main {
+    + main(String[]) : void
+}
+class Bishop {
+    #number : int
+    #display : int
+    + initialize() : void
+    + computeNextPossibleMoove() : void
+    + isNextMooveAvailable() : boolean
+    + update() : void
+    + getDisplay() : int
+    + clone() : Piece
+}
+
+
+class King {
+    #display : int
+    + initialize() : void
+    + computeNextPossibleMoove() : void
+    + isNextMooveAvailable() : boolean
+    + update() : void
+    + getDisplay() : int
+    + getNextPossiblePosition() : List<Position>
+    + clone() : Piece
+}
+
+
+class Knight {
+    #number : int
+    #display : int
+    + initialize() : void
+    + computeNextPossibleMoove() : void
+    + isNextMooveAvailable() : boolean
+    + update() : void
+    + getDisplay() : int
+    + clone() : Piece
+}
+
+
+
+class Pawn {
+    #number : int
+    #display : int
+    #isFirstMoove : boolean
+    + initialize() : void
+    + computeNextPossibleMoove() : void
+    + computePotentialAttackingPosition() : void
+    + update() : void
+    + isNextMooveAvailable() : boolean
+    + getDisplay() : int
+    + getNextPossiblePosition() : List<Position>
+    + clone() : Piece
+}
+
+
+
+class Piece {
+    #active : boolean
+    #type : ColorGame
+    #position : Position
+    #display : int
+    #name : String
+    + initialize() : void
+    + isNextMooveAvailable() : boolean
+    + update() : void
+    + getNextPossiblePosition() : List<Position>
+    + getDisplay() : int
+}
+
+
+class Position {
+    #x : int
+    #y : int
+    + isInsideChessBoard() : boolean
+    + equals() : boolean
+}
+
+
+class Queen {
+    #display : int
+    + initialize() : void
+    + computeNextPossibleMoove() : void
+    + computeBishopNextPossibleMoove() : void
+    + computeRookNextPossibleMoove() : void
+    + isNextMooveAvailable() : boolean
+    + bishopMovementAvailable() : boolean
+    + rookMovementAvailable() : boolean
+    + update() : void
+    + getNextPossiblePosition() : List<Position>
+    + getDisplay() : int
+    + clone() : Piece
+}
+
+
+
+class Rook {
+    #number : int
+    #display : int
+    + initialize() : void
+    + computeNextPossibleMoove() : void
+    + isNextMooveAvailable() : boolean
+    + update() : void
+    + getDisplay() : int
+    + clone() : Piece
+}
+
+
+enum ColorGame {
+    WHITE
+    BLACK
+}
+
+enum GameState {
+    WHITE_TURN
+    BLACK_TURN
+    CHECKMATE
+    STALEMATE
+}
+
+Piece <|-- Bishop
+Piece <|-- King
+Piece <|-- Knight
+Piece <|-- Pawn
+Piece <|-- Queen
+Piece <|-- Rook
+Piece --> Position
+Piece ..> ColorGame
+GameApp ..> GameState
+
+GameApp --> ChessBoard
+GameApp --> Piece
+GameApp ..> Position
+Main ..> GameApp
+ChessBoardUX --> GameApp
+ChessBoardUX --> Piece
+ChessBoardUX ..> ChessBoard
+ChessBoardUX ..> Position
+ChessBoardUX ..> Scene
+ChessBoardUX ..> Stage
+ChessBoardUX ..> GridPane
+ChessBoardUX ..> Pane
+ChessBoardUX ..> StackPane
+ChessBoard ..> Piece
+
+@enduml

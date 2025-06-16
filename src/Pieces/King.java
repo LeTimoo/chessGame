@@ -7,7 +7,6 @@ import java.util.List;
 
 public class King extends Piece {
     public int display;
-    public List<Position> nextPossiblePosition = new ArrayList<>();
 
     public King(ColorGame type){
         super(type,0);
@@ -94,6 +93,11 @@ public class King extends Piece {
     public int getDisplay(){
         return this.display;
     }
+
+    public List<Position> getNextPossiblePosition() {
+        return nextPossiblePosition;
+    }
+
 
     //patern prototype
     @Override

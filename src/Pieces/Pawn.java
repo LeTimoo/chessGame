@@ -9,7 +9,6 @@ public class Pawn extends Piece {
     public int number;
     public int display;
     private boolean isFirstMoove;
-    private List<Position> nextPossiblePosition = new ArrayList<>();
     private List<Position> attackingPosition =new ArrayList<>();
 
     public Pawn(ColorGame type, int number){
@@ -186,6 +185,14 @@ public class Pawn extends Piece {
     @Override
     public int getDisplay(){
         return this.display;
+    }
+
+    @Override
+    public List<Position> getNextPossiblePosition(){
+        List<Position> nextPossiblePosition = new ArrayList();
+        nextPossiblePosition.addAll(this.nextPossiblePosition);
+        nextPossiblePosition.addAll(this.attackingPosition);
+        return nextPossiblePosition;
     }
 
     //patern prototype

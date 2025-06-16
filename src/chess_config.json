@@ -1,0 +1,20 @@
+{
+  "pieces": [
+    {
+      "name": "LION",
+      "unicode": "U+1F981",
+      "color": "white",
+      "startPosition": "A1",
+      "movement": {
+        "type": "diagonal",
+        "range": 2,
+        "canJump": false
+      },
+      "capture": {
+        "type": "diagonal",
+        "range": 2,
+        "canJump": false
+      }
+    }
+  ]
+}
