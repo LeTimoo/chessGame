@@ -169,6 +169,34 @@ public class ChessBoard {
         this.pieces.add(black_queen);
         this.pieces.add(white_king);
         this.pieces.add(black_king);
+
+        ChessConfig config = ChessConfigLoader.loadFromFile("chess_config.json");
+        if (config != null) {
+            for (ChessPiece piece : config.pieces) {
+                int x = Integer.parseInt(piece.startPositionX);
+                int y = Integer.parseInt(piece.startPositionY);
+                if(piece.color.equals("white")){
+                    if(piece.movement.canJump){
+                        MysteryPieceJump pieceJson = new MysteryPieceJump(ColorGame.WHITE,0,new Position(x,y),piece.movement.range,piece.movement.type,piece.movement.canJump);
+                        this.pieces.add(pieceJson);
+                    }else{
+                        MysteryPieceNoJump pieceJson = new MysteryPieceNoJump(ColorGame.WHITE,0,new Position(x,y),piece.movement.range,piece.movement.type);
+                        this.pieces.add(pieceJson);
+                    }
+
+                }else{
+                    if(piece.movement.canJump){
+                        MysteryPieceJump pieceJson = new MysteryPieceJump(ColorGame.WHITE,0,new Position(x,y),piece.movement.range,piece.movement.type,piece.movement.canJump);
+                        this.pieces.add(pieceJson);
+                    }else{
+                        MysteryPieceNoJump pieceJson = new MysteryPieceNoJump(ColorGame.BLACK,0,new Position(x,y),piece.movement.range,piece.movement.type);
+                        this.pieces.add(pieceJson);
+                    }
+                }
+
+            }
+        }
+
     }
 
     public List<Piece> getPieces(){

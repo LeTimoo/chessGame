@@ -171,6 +171,63 @@ enum GameState {
     STALEMATE
 }
 
+class ChessConfig {
+    + pieces : List<ChessPiece>
+}
+
+class ChessConfigLoader {
+    + loadFromFile(String) : ChessConfig
+}
+
+class ChessPiece {
+    + name : String
+    + unicode : String
+    + color : String
+    + startPositionX : String
+    + startPositionY : String
+    + movement : Movement
+    + getStartPositionX() : String
+    + getStartPositionY() : String
+}
+class MysteryPieceJump {
+    - display : int
+    - range : int
+    - movementType : String
+    - canJump : boolean
+    - number : int
+    - nextPossiblePositions : List<Position>
+    + initialize() : void
+    + computeNextPossibleMoove() : void
+    + isNextMooveAvailable() : boolean
+    + update(Position) : void
+    + getNextPossiblePosition() : List<Position>
+    + getDisplay() : int
+    + clone() : Piece
+}
+
+class MysteryPieceNoJump {
+    - display : int
+    - range : int
+    - movementType : String
+    - number : int
+    - nextPossiblePositions : List<Position>
+    + initialize() : void
+    + computeNextPossibleMoove() : void
+    + isNextMooveAvailable() : boolean
+    + update(Position) : void
+    + getNextPossiblePosition() : List<Position>
+    + getDisplay() : int
+    + clone() : Piece
+}
+class Movement {
+    + type : String
+    + range : int
+    + canJump : boolean
+}
+
+Piece <|-- MysteryPieceJump
+Piece <|-- MysteryPieceNoJump
+
 Piece <|-- Bishop
 Piece <|-- King
 Piece <|-- Knight
@@ -195,5 +252,11 @@ ChessBoardUX ..> GridPane
 ChessBoardUX ..> Pane
 ChessBoardUX ..> StackPane
 ChessBoard ..> Piece
+ChessConfig --> ChessPiece
+ChessPiece --> Movement
+ChessBoard ..> ChessConfigLoader
+ChessConfigLoader --> ChessConfig
+
+
 
 @enduml

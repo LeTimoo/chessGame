@@ -1,0 +1,30 @@
+{
+  "_comment": "Le type de déplacement peut être 'line' ou 'diagonal'",
+  "pieces": [
+    {
+      "name": "mystery",
+      "unicode": "U+1F981",
+      "color": "black",
+      "startPositionX": "4",
+      "startPositionY": "4",
+      "movement": {
+        "type": "diagonal",
+        "range": 4,
+        "canJump": false
+      }
+    },
+    {
+      "name": "mystery",
+      "unicode": "U+1F981",
+      "color": "white",
+      "startPositionX": "5",
+      "startPositionY": "5",
+      "movement": {
+        "type": "line",
+        "range": 3,
+        "canJump": true
+      }
+    }
+  ]
+}
+
